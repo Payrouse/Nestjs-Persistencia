@@ -5,13 +5,13 @@ import config from './config';
 @Injectable()
 export class AppService {
   constructor(
-    // @Inject('API_KEY') private apiKey: string,
-    @Inject('TASKS') private tasks: any[],
+    //@Inject('API_KEY') private apiKey: string,
+    @Inject('TASK') private task: any,
     @Inject(config.KEY) private configService: ConfigType<typeof config>,
   ) {}
   getHello(): string {
     const apiKey = this.configService.apiKey;
-    const name = this.configService.database.name;
-    return `Hello World! ${apiKey} ${name}`;
+    const dataBase = this.configService.database.name;
+    return `Hello World!  AK=> ${apiKey}  DB=>  ${dataBase}  `;
   }
 }
