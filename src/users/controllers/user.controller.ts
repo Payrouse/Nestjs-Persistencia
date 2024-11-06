@@ -26,7 +26,7 @@ export class UsersController {
 
   @Get('tasks')
   getTasks() {
-    return this.usersService.getTask();
+    return this.usersService.getTasks();
   }
 
   @Get(':id')
