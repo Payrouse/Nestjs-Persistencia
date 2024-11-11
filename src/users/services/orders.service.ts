@@ -2,9 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Order } from '../entities/order.entity';
-import { Customer } from '../entities/customer.entity';
-import { CreateOrderDto, UpdateOrderDto } from '../dtos/order.dto';
+import { Order } from './../entities/order.entity';
+import { Customer } from './../entities/customer.entity';
+import { CreateOrderDto, UpdateOrderDto } from './../dtos/order.dto';
 
 @Injectable()
 export class OrdersService {
@@ -18,9 +18,12 @@ export class OrdersService {
   }
 
   async findOne(id: number) {
-    const order = await this.orderRepo.findOne({ where: { id: id } });
-    if (order!) {
-      throw new NotFoundException('Not Found');
+    const order = await this.orderRepo.findOne({
+      where: { id },
+      relations: ['items', 'items.product'],
+    });
+    if (!order) {
+      throw new NotFoundException('not found');
     }
     return order;
   }
@@ -33,11 +36,11 @@ export class OrdersService {
       });
       order.customer = customer;
     }
-    return this.customerRepo.save(order);
+    return this.orderRepo.save(order);
   }
 
   async update(id: number, changes: UpdateOrderDto) {
-    const order = await this.orderRepo.findOne({ where: { id: id } });
+    const order = await this.orderRepo.findOne({ where: { id } });
     if (changes.customerId) {
       const customer = await this.customerRepo.findOne({
         where: { id: changes.customerId },
