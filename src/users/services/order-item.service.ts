@@ -24,4 +24,8 @@ export class OrderItemService {
     item.quantity = data.quantity;
     return this.itemsRepo.save(item);
   }
+
+  remove(id: number) {
+    return this.itemsRepo.delete(id);
+  }
 }
