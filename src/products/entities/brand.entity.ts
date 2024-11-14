@@ -34,4 +34,6 @@ export class Brand {
 
   @OneToMany(() => Product, (product) => product.brand)
   products: Product[];
+
+  /*codig*/
 }
