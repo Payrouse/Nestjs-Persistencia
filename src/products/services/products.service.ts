@@ -66,10 +66,8 @@ export class ProductsService {
       newProduct.brand = brand;
     }
     if (data.categoriesIds) {
-      const categories = await this.categoryRepo.find({
-        where: {
-          id: In(data.categoriesIds),
-        },
+      const categories = await this.categoryRepo.findBy({
+        id: In(data.categoriesIds),
       });
       newProduct.categories = categories;
     }
@@ -77,13 +75,11 @@ export class ProductsService {
   }
 
   async update(id: number, changes: UpdateProductDto) {
-    const product = await this.productRepo.findOne({
-      where: { id },
+    const product = await this.productRepo.findOneBy({
+      id,
     });
     if (changes.brandId) {
-      const brand = await this.brandRepo.findOne({
-        where: { id: changes.brandId },
-      });
+      const brand = await this.brandRepo.findOneBy({ id: changes.brandId });
       product.brand = brand;
     }
     if (changes.categoriesIds) {
